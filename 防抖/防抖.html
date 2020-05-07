@@ -1,0 +1,49 @@
+<html>
+    <input id="myinput"/>
+    <button id="mybutton">点击</button>
+</html>
+<script>
+    // 模拟input ajax请求
+    function ajax(params) {
+        console.log(params)
+    }
+
+    function debounce(fn, delay) {
+        let timer = null;
+        return function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                // 将this绑定到当前的函数中，为了获取到arguments
+                fn.apply(this, arguments);
+            }, delay);
+        }
+    }
+    let debounceAjax = debounce(ajax, 1000);
+    document.getElementById('myinput').addEventListener('keyup', function (e) {
+        debounceAjax(e.target.value);
+    })
+
+    // 模拟button ajax请求
+    function counter(count) {
+        console.log(`点击了${count}次`)
+    }
+    function debounceBtn(fn, delay) {
+        let count = 0;
+        let timer = null;
+        return function () {
+            count ++;
+            console.log(count)
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                // 将this绑定到当前的函数中，为了获取到arguments
+                fn(count);
+                count = 0;
+            }, delay);
+        }
+    }
+    let debounceBtnAjax = debounceBtn(counter, 1000);
+    document.getElementById('mybutton').addEventListener('click', function () {
+        debounceBtnAjax();
+    })
+
+</script>
