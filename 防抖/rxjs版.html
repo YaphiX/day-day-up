@@ -1,0 +1,18 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <script src="https://cdn.bootcss.com/rxjs/6.0.0-alpha.3/Rx.min.js"></script>
+    </head>
+    <body>
+        <input id="debounce"/>
+    </body>
+</html>
+<script>
+    let $input = document.getElementById('debounce');
+    let debounce$ = Rx.Observable.fromEvent($input, 'input');
+    debounce$
+        .debounceTime(1000)
+        .subscribe((e) => {
+            console.log(e.target.value);
+        })
+</script>
