@@ -1,0 +1,63 @@
+
+<!DOCTYPE>
+<html>
+    <label>时间戳版</label>
+    <input oninput="throttle1Ajax(event)"/>
+    <hr>
+    <label>计时器版</label>
+    <input oninput="throttle2Ajax(event)"/>
+    <hr>
+    <label>混合版</label>
+    <input oninput="throttle3Ajax(event)"/>
+</html>
+<script>
+    function test(e) {
+        console.log(e.target.value);
+    }
+    // 时间戳版，优点：瞬间开始，缺点：瞬间结束
+    function throttle1(fn, delay) {
+        let last = +new Date();
+        return function () {
+            let now = +new Date();
+            if (now - last > delay) {
+                fn.apply(this, arguments);
+                last = now;
+            }
+        }
+    }
+    let throttle1Ajax = throttle1(test, 1000);
+
+    // 计时器版，优点：延迟结束，缺点：不能马上开始
+    function throttle2(fn, delay) {
+        let timer = null;
+        return function() {
+            if (!timer) {
+                timer = setTimeout(() => {
+                    fn.apply(this, arguments);
+                    timer = null;
+                }, delay);
+            }
+        }
+    }
+    let throttle2Ajax = throttle2(test, 1000);
+
+    // 时间戳+计时器，完美无暇
+    function throttle3(fn, delay) {
+        let last = +new Date();
+        let timer = null;
+        return function () {
+            let now = +new Date();
+            clearTimeout(timer);
+            if (now - last > delay) {
+                fn.apply(this, arguments);
+                last = now;
+            } else {
+                timer = setTimeout(() => {
+                    fn.apply(this, arguments)
+                }, delay);
+            }
+        }
+    }
+    let throttle3Ajax = throttle3(test, 1000);
+
+</script>
